@@ -68,30 +68,29 @@ button:hover {
     color: #444;
 }
 
-/* Saldo */
-.balance {
+.balance-container {
+    display: flex;
+    justify-content: space-between;
     font-weight: bold;
-    color: #28a745;
-    text-align: right;
+    margin-top: 5px;
 }
 
-/* Sezione spese */
-.expenses {
+.expenses, .planned-expenses {
     margin-top: 10px;
 }
 
-.expenses h3 {
+.expenses h3, .planned-expenses h3 {
     color: #555;
     font-size: 16px;
     margin-bottom: 5px;
 }
 
-.expenses ul {
+.expenses ul, .planned-expenses ul {
     list-style-type: none;
     padding: 0;
 }
 
-.expenses li {
+.expenses li, .planned-expenses li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -99,18 +98,8 @@ button:hover {
     border-bottom: 1px solid #ddd;
 }
 
-.expenses li:last-child {
+.expenses li:last-child, .planned-expenses li:last-child {
     border-bottom: none;
-}
-
-/* Input e bottoni dentro ogni mese */
-.month input {
-    width: calc(100% - 20px);
-    margin-top: 5px;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: block;
 }
 
 /* Pulsanti di eliminazione */
