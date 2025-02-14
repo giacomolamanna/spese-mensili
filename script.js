@@ -34,26 +34,81 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span>Saldo Preventivato: €${month.balancePreventivato.toFixed(2)}</span>
             `;
 
+            // Contenitore per le spese
             const expensesContainer = document.createElement("div");
-            expensesContainer.innerHTML = `
-                <h3>Spese Effettuate</h3>
-                <ul>${month.speseEffettuate.map((spesa, i) => `
-                    <li>
-                        ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
-                        <button class="edit-btn" onclick="editSpesa(${index}, ${i}, 'effettuata')">✏️</button>
-                        <button class="delete-btn" onclick="deleteSpesa(${index}, ${i}, 'effettuata')">❌</button>
-                    </li>`).join("")}
-                </ul>
+            expensesContainer.classList.add("expenses-container");
 
-                <h3>Spese Preventivate</h3>
-                <ul>${month.spesePreventivate.map((spesa, i) => `
-                    <li>
-                        ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
-                        <button class="edit-btn" onclick="editSpesa(${index}, ${i}, 'preventivata')">✏️</button>
-                        <button class="delete-btn" onclick="deleteSpesa(${index}, ${i}, 'preventivata')">❌</button>
-                    </li>`).join("")}
-                </ul>
+            // Form per aggiungere spese
+            const spesaInput = document.createElement("input");
+            spesaInput.type = "text";
+            spesaInput.placeholder = "Descrizione Spesa";
+
+            const importoInput = document.createElement("input");
+            importoInput.type = "number";
+            importoInput.placeholder = "Importo (€)";
+
+            const spesaTipo = document.createElement("select");
+            spesaTipo.innerHTML = `
+                <option value="effettuata">Effettuata</option>
+                <option value="preventivata">Preventivata</option>
             `;
+
+            const addSpesaBtn = document.createElement("button");
+            addSpesaBtn.textContent = "➕ Aggiungi Spesa";
+            addSpesaBtn.addEventListener("click", () => {
+                if (spesaInput.value.trim() && importoInput.value.trim()) {
+                    const importo = parseFloat(importoInput.value);
+                    const nuovaSpesa = {
+                        descrizione: spesaInput.value,
+                        importo: importo
+                    };
+
+                    if (spesaTipo.value === "effettuata") {
+                        month.speseEffettuate.push(nuovaSpesa);
+                        month.balanceEffettuato -= importo;
+                    } else {
+                        month.spesePreventivate.push(nuovaSpesa);
+                    }
+                    month.balancePreventivato -= importo;
+
+                    saveMonths();
+                    renderMonths();
+                }
+            });
+
+            // Liste delle spese
+            const speseEffettuateDiv = document.createElement("div");
+            speseEffettuateDiv.innerHTML = `<h3>Spese Effettuate</h3>`;
+            const speseEffettuateList = document.createElement("ul");
+            month.speseEffettuate.forEach((spesa, spesaIndex) => {
+                const spesaItem = document.createElement("li");
+                spesaItem.innerHTML = `
+                    ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
+                    <button class="delete-btn" onclick="deleteSpesa(${index}, ${spesaIndex}, 'effettuata')">❌</button>
+                `;
+                speseEffettuateList.appendChild(spesaItem);
+            });
+            speseEffettuateDiv.appendChild(speseEffettuateList);
+
+            const spesePreventivateDiv = document.createElement("div");
+            spesePreventivateDiv.innerHTML = `<h3>Spese Preventivate</h3>`;
+            const spesePreventivateList = document.createElement("ul");
+            month.spesePreventivate.forEach((spesa, spesaIndex) => {
+                const spesaItem = document.createElement("li");
+                spesaItem.innerHTML = `
+                    ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
+                    <button class="delete-btn" onclick="deleteSpesa(${index}, ${spesaIndex}, 'preventivata')">❌</button>
+                `;
+                spesePreventivateList.appendChild(spesaItem);
+            });
+            spesePreventivateDiv.appendChild(spesePreventivateList);
+
+            expensesContainer.appendChild(spesaInput);
+            expensesContainer.appendChild(importoInput);
+            expensesContainer.appendChild(spesaTipo);
+            expensesContainer.appendChild(addSpesaBtn);
+            expensesContainer.appendChild(speseEffettuateDiv);
+            expensesContainer.appendChild(spesePreventivateDiv);
 
             monthDiv.appendChild(monthHeader);
             monthDiv.appendChild(balanceContainer);
@@ -76,9 +131,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    window.deleteMonth = function (index) {
+        if (confirm("Vuoi eliminare questo mese?")) {
+            months.splice(index, 1);
+            saveMonths();
+            renderMonths();
+        }
+    };
+
     window.deleteSpesa = function (monthIndex, spesaIndex, tipo) {
         if (confirm("Vuoi eliminare questa spesa?")) {
-            months[monthIndex][tipo === "effettuata" ? "speseEffettuate" : "spesePreventivate"].splice(spesaIndex, 1);
+            if (tipo === "effettuata") {
+                months[monthIndex].balanceEffettuato += months[monthIndex].speseEffettuate[spesaIndex].importo;
+                months[monthIndex].balancePreventivato += months[monthIndex].speseEffettuate[spesaIndex].importo;
+                months[monthIndex].speseEffettuate.splice(spesaIndex, 1);
+            } else {
+                months[monthIndex].balancePreventivato += months[monthIndex].spesePreventivate[spesaIndex].importo;
+                months[monthIndex].spesePreventivate.splice(spesaIndex, 1);
+            }
             saveMonths();
             renderMonths();
         }
