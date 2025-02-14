@@ -34,51 +34,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span>Saldo Preventivato: €${month.balancePreventivato.toFixed(2)}</span>
             `;
 
-            monthDiv.appendChild(monthHeader);
-            monthDiv.appendChild(balanceContainer);
+            const expensesContainer = document.createElement("div");
+            expensesContainer.innerHTML = `
+                <h3>Spese Effettuate</h3>
+                <ul>${month.speseEffettuate.map((spesa, i) => `
+                    <li>
+                        ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
+                        <button class="edit-btn" onclick="editSpesa(${index}, ${i}, 'effettuata')">✏️</button>
+                        <button class="delete-btn" onclick="deleteSpesa(${index}, ${i}, 'effettuata')">❌</button>
+                    </li>`).join("")}
+                </ul>
 
-            // Input per aggiungere spese
-            const spesaInput = document.createElement("input");
-            spesaInput.type = "text";
-            spesaInput.placeholder = "Descrizione Spesa";
-
-            const importoInput = document.createElement("input");
-            importoInput.type = "number";
-            importoInput.placeholder = "Importo (€)";
-
-            const spesaTipo = document.createElement("select");
-            spesaTipo.innerHTML = `
-                <option value="effettuata">Effettuata</option>
-                <option value="preventivata">Preventivata</option>
+                <h3>Spese Preventivate</h3>
+                <ul>${month.spesePreventivate.map((spesa, i) => `
+                    <li>
+                        ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
+                        <button class="edit-btn" onclick="editSpesa(${index}, ${i}, 'preventivata')">✏️</button>
+                        <button class="delete-btn" onclick="deleteSpesa(${index}, ${i}, 'preventivata')">❌</button>
+                    </li>`).join("")}
+                </ul>
             `;
 
-            const addSpesaBtn = document.createElement("button");
-            addSpesaBtn.textContent = "➕ Aggiungi Spesa";
-            addSpesaBtn.addEventListener("click", () => {
-                if (spesaInput.value.trim() && importoInput.value.trim()) {
-                    const importo = parseFloat(importoInput.value);
-                    const nuovaSpesa = {
-                        descrizione: spesaInput.value,
-                        importo: importo,
-                        tipo: spesaTipo.value
-                    };
-
-                    if (spesaTipo.value === "effettuata") {
-                        month.balanceEffettuato -= importo;
-                    }
-                    month.balancePreventivato -= importo;
-                    month.spese.push(nuovaSpesa);
-
-                    saveMonths();
-                    renderMonths();
-                }
-            });
-
-            monthDiv.appendChild(spesaInput);
-            monthDiv.appendChild(importoInput);
-            monthDiv.appendChild(spesaTipo);
-            monthDiv.appendChild(addSpesaBtn);
-
+            monthDiv.appendChild(monthHeader);
+            monthDiv.appendChild(balanceContainer);
+            monthDiv.appendChild(expensesContainer);
             monthsContainer.appendChild(monthDiv);
         });
     }
@@ -89,16 +68,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 name: monthPicker.value,
                 balanceEffettuato: parseFloat(initialBalanceInput.value),
                 balancePreventivato: parseFloat(initialBalanceInput.value),
-                spese: []
+                speseEffettuate: [],
+                spesePreventivate: []
             });
             saveMonths();
             renderMonths();
         }
     });
 
-    window.deleteMonth = function (index) {
-        if (confirm("Vuoi eliminare questo mese?")) {
-            months.splice(index, 1);
+    window.deleteSpesa = function (monthIndex, spesaIndex, tipo) {
+        if (confirm("Vuoi eliminare questa spesa?")) {
+            months[monthIndex][tipo === "effettuata" ? "speseEffettuate" : "spesePreventivate"].splice(spesaIndex, 1);
             saveMonths();
             renderMonths();
         }
