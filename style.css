@@ -78,12 +78,7 @@ button:hover {
     margin-top: 10px;
 }
 
-.expenses h3, .planned-expenses h3 {
-    color: #555;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
+/* Liste delle spese */
 .expenses ul, .planned-expenses ul {
     list-style-type: none;
     padding: 0;
@@ -97,12 +92,8 @@ button:hover {
     border-bottom: 1px solid #ddd;
 }
 
-.expenses li:last-child, .planned-expenses li:last-child {
-    border-bottom: none;
-}
-
-/* Pulsanti di eliminazione */
-.delete-btn {
+/* Pulsanti di eliminazione e modifica */
+.delete-btn, .edit-btn {
     background: none;
     border: none;
     color: #dc3545;
@@ -111,6 +102,15 @@ button:hover {
     padding: 4px;
 }
 
+.edit-btn {
+    color: #007bff;
+    margin-right: 10px;
+}
+
 .delete-btn:hover {
     color: #c82333;
+}
+
+.edit-btn:hover {
+    color: #0056b3;
 }
