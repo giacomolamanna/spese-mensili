@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const spesaItem = document.createElement("li");
                 spesaItem.innerHTML = `
                     ${spesa.descrizione} - €${spesa.importo.toFixed(2)}
+                    <button class="move-btn" onclick="moveToEffettuata(${index}, ${spesaIndex})">➡️</button>
                     <button class="delete-btn" onclick="deleteSpesa(${index}, ${spesaIndex}, 'preventivata')">❌</button>
                 `;
                 spesePreventivateList.appendChild(spesaItem);
@@ -149,6 +150,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 months[monthIndex].balancePreventivato += months[monthIndex].spesePreventivate[spesaIndex].importo;
                 months[monthIndex].spesePreventivate.splice(spesaIndex, 1);
             }
+            saveMonths();
+            renderMonths();
+        }
+    };
+
+    window.moveToEffettuata = function (monthIndex, spesaIndex) {
+        const spesa = months[monthIndex].spesePreventivate[spesaIndex];
+
+        if (confirm("Vuoi spostare questa spesa nelle spese effettuate?")) {
+            months[monthIndex].spesePreventivate.splice(spesaIndex, 1);
+            months[monthIndex].speseEffettuate.push(spesa);
+            months[monthIndex].balanceEffettuato -= spesa.importo; // Aggiorna il saldo effettuato
             saveMonths();
             renderMonths();
         }
