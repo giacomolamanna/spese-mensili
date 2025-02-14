@@ -1,0 +1,133 @@
+/* Stile generale */
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Titolo */
+h1 {
+    color: #333;
+}
+
+/* Controlli superiori */
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+input, select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Bottoni generali */
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Sezione mese */
+.month {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.month h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #444;
+}
+
+/* Saldo */
+.balance {
+    font-weight: bold;
+    color: #28a745;
+    text-align: right;
+}
+
+/* Sezione spese */
+.expenses {
+    margin-top: 10px;
+}
+
+.expenses h3 {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.expenses ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.expenses li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.expenses li:last-child {
+    border-bottom: none;
+}
+
+/* Input e bottoni dentro ogni mese */
+.month input {
+    width: calc(100% - 20px);
+    margin-top: 5px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: block;
+}
+
+/* Pulsanti di eliminazione */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 3px;
+}
+
+.delete-btn:hover {
+    color: #c82333;
+}
