@@ -93,13 +93,21 @@ button:hover {
 }
 
 /* Pulsanti di eliminazione e modifica */
-.delete-btn, .edit-btn {
-    background: none;
+.delete-btn, .edit-btn, .move-btn {
+    background: none; /* Rimuove lo sfondo */
     border: none;
-    color: #dc3545;
     font-size: 18px;
     cursor: pointer;
     padding: 4px;
+}
+
+/* Colori per i vari pulsanti */
+.delete-btn {
+    color: #dc3545;
+}
+
+.delete-btn:hover {
+    color: #c82333;
 }
 
 .edit-btn {
@@ -107,10 +115,16 @@ button:hover {
     margin-right: 10px;
 }
 
-.delete-btn:hover {
-    color: #c82333;
-}
-
 .edit-btn:hover {
     color: #0056b3;
+}
+
+/* Pulsante per spostare spese */
+.move-btn {
+    color: #28a745; /* Verde per indicare il passaggio alla lista effettuata */
+    margin-right: 10px;
+}
+
+.move-btn:hover {
+    color: #218838;
 }
